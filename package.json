@@ -1,5 +1,5 @@
 {
-  "name": "emitter-s3",
+  "name": "@astronomerio/emitter-s3",
   "version": "1.0.0",
   "description": "Emits an array of JSON object to an Amazon S3 file.",
   "main": "dist/index.js",
