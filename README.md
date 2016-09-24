@@ -19,7 +19,7 @@ await emitter.emit(data);
 
 Import the S3Emitter from 'emitter-s3' and pass in an options object to the constructor.
 
-``javascript
+```javascript
 import S3Emitter from 'emitter-s3';
 
 const options = { 
