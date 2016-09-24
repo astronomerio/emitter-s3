@@ -2,19 +2,6 @@
 
 Wrapper for the AWS.S3 client that will emit an array or stream of JSON object to an s3 file.
 
-## Usage
-
-```javascript
-
-import S3Emitter from 'emitter-s3';
-
-const data = [{ foo: "bar" }, { hello: "world" }];
-
-const emitter = new S3Emitter();
-
-await emitter.emit(data);
-```
-
 ## Creating an Emitter
 
 Import the S3Emitter from 'emitter-s3' and pass in an options object to the constructor.
