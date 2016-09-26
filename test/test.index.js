@@ -50,14 +50,14 @@ describe('S3 Emitter', function () {
         });
 
         describe('#getS3FilePath', function () {
-            it('should return the correct path with a uuid appended', function () {
+            it('should return the correct path with a timestamp appended', function () {
                 const filePath = emitter.getS3FilePath();
 
                 // will make sure the filePath starts with the same filePath as specified in options
                 const start = /^my\/file\/path\//.test(filePath);
                 assert.ok(start);
 
-                // tests if the file ends at just the file path from options. This should be false because there should be a uuid appended
+                // tests if the file ends at just the file path from options. This should be false because there should be a timestamp appended
                 const end = /^my\/file\/path\/$/.test(filePath);
                 assert.isFalse(end);
             });
