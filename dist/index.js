@@ -14,10 +14,6 @@ var _awsSdk = require('aws-sdk');
 
 var _awsSdk2 = _interopRequireDefault(_awsSdk);
 
-var _nodeUuid = require('node-uuid');
-
-var _nodeUuid2 = _interopRequireDefault(_nodeUuid);
-
 var _thenify = require('thenify');
 
 var _thenify2 = _interopRequireDefault(_thenify);
@@ -62,14 +58,14 @@ var _class = function () {
         }
 
         /**
-         * Takes the file path from options passed in the constructor and appends a uuid as the filename.
+         * Takes the file path from options passed in the constructor and appends a timestamp as the filename.
          * @returns {String} filePath The filePath that will where the file lives in S3.
          */
 
     }, {
         key: 'getS3FilePath',
         value: function getS3FilePath() {
-            var filename = _nodeUuid2.default.v4();
+            var filename = new Date().toISOString();
             var filePath = _path2.default.join(this.filePath, filename);
             return filePath;
         }
