@@ -34,7 +34,7 @@ var _createAwsParams2 = _interopRequireDefault(_createAwsParams);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { return step("next", value); }, function (err) { return step("throw", err); }); } } return step("next"); }); }; }
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -43,8 +43,10 @@ var _class = function () {
         _classCallCheck(this, _class);
 
         var filePath = options.filePath;
+        var appendTimestampToFilename = options.appendTimestampToFilename;
 
-        this.filePath = filePath;
+        this.filePath = filePath || '';
+        this.appendTimestampToFilename = appendTimestampToFilename === false ? false : true;
 
         var awsParams = (0, _createAwsParams2.default)(options);
         this.client = this.createClient(awsParams);
@@ -65,9 +67,13 @@ var _class = function () {
     }, {
         key: 'getS3FilePath',
         value: function getS3FilePath() {
-            var filename = new Date().toISOString();
-            var filePath = _path2.default.join(this.filePath, filename);
-            return filePath;
+            if (this.appendTimestampToFilename) {
+                var filename = new Date().toISOString();
+                var filePath = _path2.default.join(this.filePath, filename);
+                return filePath;
+            }
+
+            return this.filePath;
         }
 
         /**

@@ -6,7 +6,14 @@ import _ from 'highland';
 
 describe('S3 Emitter', function () {
     let emitter;
-    const options = { filePath: 'my/file/path', bucketName: 'my_bucket', region: 'us-east-1', awsAccessKeyId: 'accessKeyId', awsSecretAccessKey: 'secretAccessKey' };
+    const options = { 
+        filePath: 'my/file/path',
+        appendTimestampToFilename: false,
+        bucketName: 'my_bucket',
+        region: 'us-east-1',
+        awsAccessKeyId: 'accessKeyId',
+        awsSecretAccessKey: 'secretAccessKey'
+    };
     const records = [{ foo: 'bar' }, { hello: 'world' }];
 
     beforeEach(function () {
@@ -33,6 +40,7 @@ describe('S3 Emitter', function () {
         it('should have the right settings', function () {
             // just make sure the emitter is saving the file path and creating a client
             assert.equal(emitter.filePath, options.filePath);
+            assert.equal(emitter.appendTimestampToFilename, options.appendTimestampToFilename);
             assert.ok(emitter.client);
         });
 
@@ -50,7 +58,8 @@ describe('S3 Emitter', function () {
         });
 
         describe('#getS3FilePath', function () {
-            it('should return the correct path with a timestamp appended', function () {
+            it('should return the correct path with a timestamp appended when the option is true', function () {
+                emitter = new S3Emitter({ ...options, appendTimestampToFilename: true });
                 const filePath = emitter.getS3FilePath();
 
                 // will make sure the filePath starts with the same filePath as specified in options
@@ -60,6 +69,15 @@ describe('S3 Emitter', function () {
                 // tests if the file ends at just the file path from options. This should be false because there should be a timestamp appended
                 const end = /^my\/file\/path\/$/.test(filePath);
                 assert.isFalse(end);
+            });
+
+            it('should return the correct path with a timestamp appended when the option is false', function () {
+                const filePath = emitter.getS3FilePath();
+
+                // will make sure the filePath is the same filePath as specified in options
+                const start = /^my\/file\/path$/.test(filePath);
+                console.log(filePath);
+                assert.ok(start);
             });
         });
 
