@@ -1,5 +1,3 @@
-[ ![Codeship Status for astronomerio/emitter-s3](https://app.codeship.com/projects/ba578a00-6962-0134-e198-0611f7075927/status?branch=master)](https://app.codeship.com/projects/176690)
-
 # emitter-s3
 
 Wrapper for the AWS.S3 client that will emit an array or stream of JSON object to an s3 file.
