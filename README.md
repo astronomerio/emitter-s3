@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/astronomerio/emitter-s3.svg?style=svg)](https://circleci.com/gh/astronomerio/emitter-s3)
+
 # emitter-s3
 
 Wrapper for the AWS.S3 client that will emit an array or stream of JSON object to an s3 file.
