@@ -6,13 +6,18 @@ import _ from 'highland';
 
 describe('S3 Emitter', function () {
     let emitter;
-    const options = { 
+    const accessKeyId = 'access_key'; 
+    const secretAccessKey = 'secret_key';
+    const serverSideEncryption = 'AES256';
+    const bucketName = 'bucket_name';
+    const options = {
         filePath: 'my/file/path',
         appendTimestampToFilename: false,
-        bucketName: 'my_bucket',
+        bucketName: bucketName,
         region: 'us-east-1',
-        awsAccessKeyId: 'accessKeyId',
-        awsSecretAccessKey: 'secretAccessKey'
+        awsAccessKeyId: accessKeyId,
+        awsSecretAccessKey: secretAccessKey,
+        serverSideEncryption: serverSideEncryption
     };
     const records = [{ foo: 'bar' }, { hello: 'world' }];
 
@@ -24,14 +29,29 @@ describe('S3 Emitter', function () {
         it('should create the correct params', function () {
             const expectedParams = {
                 region: 'us-east-1',
-                accessKeyId: 'accessKeyId',
-                secretAccessKey: 'secretAccessKey',
+                accessKeyId: accessKeyId,
+                secretAccessKey: secretAccessKey,
                 params: {
-                    Bucket: 'my_bucket'
+                    Bucket: bucketName,
+                    ServerSideEncryption: serverSideEncryption
                 }
             };
 
             const params = createAwsParams(options);
+            assert.deepEqual(params, expectedParams);
+        });
+
+        it('should create the correct params when serverSideEncryption does not exist', function () {
+            const expectedParams = {
+                region: 'us-east-1',
+                accessKeyId: accessKeyId,
+                secretAccessKey: secretAccessKey,
+                params: {
+                    Bucket: bucketName
+                }
+            };
+
+            const params = createAwsParams({ ...options, serverSideEncryption: null });
             assert.deepEqual(params, expectedParams);
         });
     });
@@ -83,7 +103,7 @@ describe('S3 Emitter', function () {
 
         describe('#emit', function () {
             it('should call uploadBody with correct params', function (done) {
-                const filePathStub = sinon.stub(emitter, 'getS3FilePath').returns('filePath')
+                const filePathStub = sinon.stub(emitter, 'getS3FilePath').returns('filePath');
                 const getUploadBodyStub = sinon.stub(emitter, 'getUploadBody').returns('uploadBody');
                 const uploadStub = sinon.stub(emitter, 'uploadRecords');
 
@@ -100,7 +120,7 @@ describe('S3 Emitter', function () {
         // describe('upload', function () {
         //     it('should upload to s3', async function () {
         //         const uploadBody = _(records).map(JSON.stringify).intersperse('\n');
-        //         await emitter.uploadRecords('test/file/here', uploadBody);
+        //         await emitter.uploadRecords('astronomer/test/file/here', uploadBody);
         //     });
         // });
     });
