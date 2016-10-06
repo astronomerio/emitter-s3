@@ -15,6 +15,7 @@ function createAWSParams(options) {
     var awsAccessKeyId = options.awsAccessKeyId;
     var awsSecretAccessKey = options.awsSecretAccessKey;
     var serverSideEncryption = options.serverSideEncryption;
+    var acl = options.acl;
 
     var awsParams = {
         params: {}
@@ -26,6 +27,10 @@ function createAWSParams(options) {
     awsParams.params.Bucket = bucketName;
     if (serverSideEncryption) {
         awsParams.params.ServerSideEncryption = serverSideEncryption;
+    }
+
+    if (acl) {
+        awsParams.params.ACL = acl;
     }
 
     return awsParams;

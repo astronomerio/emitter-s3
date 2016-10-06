@@ -10,6 +10,7 @@ describe('S3 Emitter', function () {
     const secretAccessKey = 'secret_key';
     const serverSideEncryption = 'AES256';
     const bucketName = 'bucket_name';
+    const acl = 'bucket-owner-full-control';
     const options = {
         filePath: 'my/file/path',
         appendTimestampToFilename: false,
@@ -17,7 +18,8 @@ describe('S3 Emitter', function () {
         region: 'us-east-1',
         awsAccessKeyId: accessKeyId,
         awsSecretAccessKey: secretAccessKey,
-        serverSideEncryption: serverSideEncryption
+        serverSideEncryption: serverSideEncryption,
+        acl: acl
     };
     const records = [{ foo: 'bar' }, { hello: 'world' }];
 
@@ -33,7 +35,8 @@ describe('S3 Emitter', function () {
                 secretAccessKey: secretAccessKey,
                 params: {
                     Bucket: bucketName,
-                    ServerSideEncryption: serverSideEncryption
+                    ServerSideEncryption: serverSideEncryption,
+                    ACL: acl
                 }
             };
 
@@ -41,7 +44,7 @@ describe('S3 Emitter', function () {
             assert.deepEqual(params, expectedParams);
         });
 
-        it('should create the correct params when serverSideEncryption does not exist', function () {
+        it('should create the correct params when serverSideEncryption and acl do not exist', function () {
             const expectedParams = {
                 region: 'us-east-1',
                 accessKeyId: accessKeyId,
@@ -51,7 +54,7 @@ describe('S3 Emitter', function () {
                 }
             };
 
-            const params = createAwsParams({ ...options, serverSideEncryption: null });
+            const params = createAwsParams({ ...options, serverSideEncryption: null, acl: null });
             assert.deepEqual(params, expectedParams);
         });
     });
