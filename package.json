@@ -2,7 +2,7 @@
   "name": "@astronomerio/emitter-s3",
   "version": "1.0.3",
   "description": "Emits an array of JSON object to an Amazon S3 file.",
-  "main": "dist/index.js",
+  "main": "lib/index.js",
   "scripts": {
     "build": "babel lib -d dist",
     "test": "mocha -r babel-register -r babel-polyfill test/test.index.js"
