@@ -62,8 +62,8 @@ describe('S3 Emitter', function () {
   describe('S3 Emitter', function () {
     it('should have the right settings', function () {
       // just make sure the emitter is saving the file path and creating a client
-      assert.equal(emitter.filePath, options.filePath);
-      assert.equal(emitter.appendTimestampToFilename, options.appendTimestampToFilename);
+      assert.equal(emitter.options.filePath, options.filePath);
+      assert.equal(emitter.options.appendTimestampToFilename, options.appendTimestampToFilename);
       assert.ok(emitter.client);
     });
 
@@ -99,7 +99,15 @@ describe('S3 Emitter', function () {
 
         // will make sure the filePath is the same filePath as specified in options
         const start = /^my\/file\/path$/.test(filePath);
-        console.log(filePath);
+        assert.ok(start);
+      });
+
+      it('should return the correct path when there is a leading /', function () {
+        emitter.options.filePath = 'my/file/path';
+        const filePath = emitter.getS3FilePath();
+
+        // will make sure the filePath is the same filePath as specified in options
+        const start = /^my\/file\/path$/.test(filePath);
         assert.ok(start);
       });
     });
