@@ -98,11 +98,8 @@ var _class = function () {
         key: 'getS3FilePath',
         value: function getS3FilePath() {
             var filePath = this.options.filePath;
-            console.log(filePath);
             var appended = this.appendTimestampToFilePath(filePath);
-            console.log(appended);
             var trimmed = this.trimFilePath(appended);
-            console.log(trimmed);
             return trimmed;
         }
 
