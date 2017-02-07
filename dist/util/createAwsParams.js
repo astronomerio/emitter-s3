@@ -10,12 +10,12 @@ exports.default = createAWSParams;
  */
 
 function createAWSParams(options) {
-    var region = options.region;
-    var bucketName = options.bucketName;
-    var awsAccessKeyId = options.awsAccessKeyId;
-    var awsSecretAccessKey = options.awsSecretAccessKey;
-    var serverSideEncryption = options.serverSideEncryption;
-    var acl = options.acl;
+    var region = options.region,
+        bucketName = options.bucketName,
+        awsAccessKeyId = options.awsAccessKeyId,
+        awsSecretAccessKey = options.awsSecretAccessKey,
+        serverSideEncryption = options.serverSideEncryption,
+        acl = options.acl;
 
     var awsParams = {
         params: {}

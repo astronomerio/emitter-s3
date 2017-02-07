@@ -42,11 +42,7 @@ var _class = function () {
     function _class(options) {
         _classCallCheck(this, _class);
 
-        var filePath = options.filePath;
-        var appendTimestampToFilename = options.appendTimestampToFilename;
-
-        this.filePath = filePath || '';
-        this.appendTimestampToFilename = appendTimestampToFilename === false ? false : true;
+        this.options = options;
 
         var awsParams = (0, _createAwsParams2.default)(options);
         this.client = this.createClient(awsParams);
@@ -60,6 +56,40 @@ var _class = function () {
         }
 
         /**
+         * Appends a timestamp to the end of an S3 path so the filename ends up being a timestamp.
+         * @param {String} file path to which to append the timestamp
+         * @returns {String} mutated filepath with timestamp appended to end
+         */
+
+    }, {
+        key: 'appendTimestampToFilePath',
+        value: function appendTimestampToFilePath(filePath) {
+            if (this.options.appendTimestampToFilename === true) {
+                var filename = new Date().toISOString();
+                return _path2.default.join(filePath, filename);
+            }
+
+            return filePath;
+        }
+
+        /**
+         * Will trim the first character of a filePath if it is a '/'. This causes an issue with finding your files in S3.
+         * @param {String} file path to trim
+         * @returns {String} mutated file path with a leading '/' removed
+         */
+
+    }, {
+        key: 'trimFilePath',
+        value: function trimFilePath(filePath) {
+            // we need to trim the first character if it is a /
+            if (this.options.filePath.charAt(0) === '/') {
+                return filePath.substring(1);
+            }
+
+            return filePath;
+        }
+
+        /**
          * Takes the file path from options passed in the constructor and appends a timestamp as the filename.
          * @returns {String} filePath The filePath that will where the file lives in S3.
          */
@@ -67,13 +97,13 @@ var _class = function () {
     }, {
         key: 'getS3FilePath',
         value: function getS3FilePath() {
-            if (this.appendTimestampToFilename) {
-                var filename = new Date().toISOString();
-                var filePath = _path2.default.join(this.filePath, filename);
-                return filePath;
-            }
-
-            return this.filePath;
+            var filePath = this.options.filePath;
+            console.log(filePath);
+            var appended = this.appendTimestampToFilePath(filePath);
+            console.log(appended);
+            var trimmed = this.trimFilePath(appended);
+            console.log(trimmed);
+            return trimmed;
         }
 
         /**
@@ -153,4 +183,3 @@ var _class = function () {
 }();
 
 exports.default = _class;
-;
