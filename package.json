@@ -2,26 +2,20 @@
   "name": "@astronomerio/emitter-s3",
   "version": "1.0.3",
   "description": "Emits an array of JSON object to an Amazon S3 file.",
-  "main": "dist/index.js",
+  "main": "lib/index.js",
   "scripts": {
-    "build": "babel lib -d dist",
-    "test": "mocha -r babel-register -r babel-polyfill test/test.index.js"
+    "test": "mocha test/test.js",
+    "test-watch": "mocha -w test/test.js"
   },
   "author": "Alois Barreras",
   "license": "MIT",
   "dependencies": {
+    "@astronomerio/astronomer-logger": "^1.1.3",
     "aws-sdk": "^2.4.14",
-    "bunyan": "^1.8.1",
-    "highland": "^3.0.0-beta.2",
+    "highland": "^2.10.5",
     "thenify": "^3.2.0"
   },
   "devDependencies": {
-    "babel-cli": "^6.16.0",
-    "babel-plugin-transform-object-rest-spread": "^6.16.0",
-    "babel-polyfill": "^6.13.0",
-    "babel-preset-es2015": "^6.14.0",
-    "babel-preset-stage-3": "^6.11.0",
-    "babel-register": "^6.14.0",
     "chai": "^3.5.0",
     "mocha": "^3.0.2",
     "sinon": "^1.17.6"

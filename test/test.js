@@ -1,8 +1,8 @@
-import S3Emitter from '../lib';
-import createAwsParams from '../lib/util/createAwsParams';
-import { assert } from 'chai';
-import sinon from 'sinon';
-import _ from 'highland';
+const S3Emitter = require('../lib');
+const createAwsParams = require('../lib/util/createAwsParams');
+const { assert } = require('chai');
+const sinon = require('sinon');
+const _ = require('highland');
 
 describe('S3 Emitter', function () {
   let emitter;
@@ -11,19 +11,20 @@ describe('S3 Emitter', function () {
   const serverSideEncryption = 'AES256';
   const bucketName = 'bucket_name';
   const acl = 'bucket-owner-full-control';
-  const options = {
-    filePath: 'my/file/path',
-    appendTimestampToFilename: false,
-    bucketName: bucketName,
-    region: 'us-east-1',
-    awsAccessKeyId: accessKeyId,
-    awsSecretAccessKey: secretAccessKey,
-    serverSideEncryption: serverSideEncryption,
-    acl: acl
-  };
+  let options;
   const records = [{ foo: 'bar' }, { hello: 'world' }];
 
   beforeEach(function () {
+    options = {
+      filePath: 'my/file/path',
+      appendTimestampToFilename: false,
+      bucketName: bucketName,
+      region: 'us-east-1',
+      awsAccessKeyId: accessKeyId,
+      awsSecretAccessKey: secretAccessKey,
+      serverSideEncryption: serverSideEncryption,
+      acl: acl
+    };
     emitter = new S3Emitter(options);
   });
 
@@ -54,7 +55,7 @@ describe('S3 Emitter', function () {
         }
       };
 
-      const params = createAwsParams({ ...options, serverSideEncryption: null, acl: null });
+      const params = createAwsParams(Object.assign(options, { serverSideEncryption: null, acl: null }));
       assert.deepEqual(params, expectedParams);
     });
   });
@@ -82,7 +83,7 @@ describe('S3 Emitter', function () {
 
     describe('#getS3FilePath', function () {
       it('should return the correct path with a timestamp appended when the option is true', function () {
-        emitter = new S3Emitter({ ...options, appendTimestampToFilename: true });
+        emitter = new S3Emitter(Object.assign(options, { appendTimestampToFilename: true }));
         const filePath = emitter.getS3FilePath();
 
         // will make sure the filePath starts with the same filePath as specified in options
@@ -96,7 +97,7 @@ describe('S3 Emitter', function () {
 
       it('should return the correct path with a timestamp appended when the option is false', function () {
         const filePath = emitter.getS3FilePath();
-
+        console.log(filePath)
         // will make sure the filePath is the same filePath as specified in options
         const start = /^my\/file\/path$/.test(filePath);
         assert.ok(start);
